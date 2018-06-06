@@ -602,6 +602,11 @@ vn_set_pwd(const char *filename)
 	mm_segment_t saved_fs;
 	int rc;
 
+	if (!current->fs) {
+		printk(KERN_WARNING "current->fs == NULL in vn_set_pwd\n");
+		return -ENOENT;
+	}
+
 	/*
 	 * user_path_dir() and __user_walk() both expect 'filename' to be
 	 * a user space address so we must briefly increase the data segment
